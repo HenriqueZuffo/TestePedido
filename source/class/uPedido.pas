@@ -113,7 +113,7 @@ const insertOrUpdate = '	UPDATE or INSERT INTO PEDIDOS ' +
 	                     ' RETURNing NROPEDIDO';
 var
   msgValidacao: string;
-  i: integer;
+  i, codPedProds: integer;
 begin
   inherited;
   msgValidacao := self.Validar;
@@ -145,11 +145,18 @@ begin
     finally
       dmConexaoBanco.query.SQL.Clear;
       dmConexaoBanco.query.Close;
-    end;                         
+    end;
 
+    codPedProds := 0;
     for I := 0 to Produtos.Count-1 do begin
+      if ((Produtos[i].nroped_prods = 0) and (codPedProds > 0)) then begin
+        Produtos[i].nroped_prods := codPedProds;
+      end;
+
       Produtos[i].nropedido := self.nropedido;
       Produtos[i].Salvar;
+
+      codPedProds := Produtos[i].nroped_prods;
     end;
   except
     on e: Exception do begin
@@ -213,7 +220,8 @@ procedure TPedidoProduto.Salvar;
 const insertOrUpdateProduto = ' UPDATE OR INSERT INTO PED_PRODS ' + //
                               ' (NROPED_PRODS, NROPEDIDO, NROITEM, CODPRODUTO, QTDE, UN, PRECO, PERCDESCONTO, VALDESCONTO, VALTOTAL) ' +//
                               ' VALUES(:NROPED_PRODS, :NROPEDIDO, :NROITEM, :CODPRODUTO, :QTDE, :UN, :PRECO, :PERCDESCONTO, :VALDESCONTO, :VALTOTAL)' +//
-                              ' matching(NROPED_PRODS, NROITEM)';
+                              ' matching(NROPED_PRODS, NROITEM)' + //
+                              ' returning NROPED_PRODS';
 var
   msgValidacao: string;
 begin
@@ -246,7 +254,7 @@ begin
 
     try
       dmConexaoBanco.query.Open;
-      self.nropedido := dmConexaoBanco.query.Fields[0].AsInteger;
+      self.nroped_prods := dmConexaoBanco.query.Fields[0].AsInteger;
     finally
       dmConexaoBanco.query.SQL.Clear;
       dmConexaoBanco.query.Close;

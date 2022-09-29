@@ -54,7 +54,6 @@ type
     btnExcluirProduto: TSpeedButton;
     btnEditarProduto: TSpeedButton;
     btnIncluirProduto: TSpeedButton;
-    procedure mm_ObservacoesDblClick(Sender: TObject);
   private
     FTipoTela: TTipoTela;
     procedure SetTipoTela(const Value: TTipoTela);
@@ -72,12 +71,6 @@ implementation
 {$R *.dfm}
 
 { TfrmCadPedido }
-
-procedure TfrmCadPedido.mm_ObservacoesDblClick(Sender: TObject);
-begin
-  inherited;
-//
-end;
 
 procedure TfrmCadPedido.SetTipoTela(const Value: TTipoTela);
 begin

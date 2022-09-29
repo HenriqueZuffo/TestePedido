@@ -4,6 +4,8 @@ interface
 
 function iif(const AExpressao: boolean; const returnTrue: Variant; const returnElse: variant): Variant;
 function montarMsgCampoObrigatorio(const campo: string; const MsgPersonalizada: string = ''): string;
+function getPercentualByValor(AValorBase, AValor: Currency): Currency;
+function getValorByPercentual(AValorBase: Currency; APercentual: Double): Double;
 
 
 type
@@ -51,6 +53,21 @@ function montarMsgCampoObrigatorio(const campo: string; const MsgPersonalizada: 
 begin
   Result := Format(iif(MsgPersonalizada <> '', MsgPersonalizada, ' %s é obrigatório e não foi preenchido!'), [Campo]);
 end;
+
+function getPercentualByValor(AValorBase, AValor: Currency): Currency;
+begin
+  if (AValorBase <> 0) then
+    Result := (AValor * 100) / AValorBase
+  else
+    Result := 0;
+end;
+
+function getValorByPercentual(AValorBase: Currency; APercentual: Double): Double;
+begin
+  Result := (AValorBase * APercentual) / 100
+end;
+
+
 
 { TMessageBox }
 

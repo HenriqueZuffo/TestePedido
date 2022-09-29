@@ -53,6 +53,8 @@ inherited frmCadPedido: TfrmCadPedido
           TabStop = False
           Align = alClient
           Color = clBtnFace
+          DataField = 'NROPEDIDO'
+          DataSource = dmPedido.dsCadastro
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -91,6 +93,8 @@ inherited frmCadPedido: TfrmCadPedido
           TabStop = False
           Align = alClient
           Color = clBtnFace
+          DataField = 'DATA'
+          DataSource = dmPedido.dsCadastro
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -125,6 +129,7 @@ inherited frmCadPedido: TfrmCadPedido
           Top = 17
           Width = 41
           Height = 27
+          Hint = 'Pesquisar Cliente'
           Align = alLeft
           Caption = '....'
           ExplicitTop = 20
@@ -138,6 +143,8 @@ inherited frmCadPedido: TfrmCadPedido
           TabStop = False
           Align = alRight
           Color = clBtnFace
+          DataField = 'NOME_CLIENTE'
+          DataSource = dmPedido.dsCadastro
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -150,6 +157,8 @@ inherited frmCadPedido: TfrmCadPedido
           Width = 95
           Height = 27
           Align = alClient
+          DataField = 'CODCLIENTE'
+          DataSource = dmPedido.dsCadastro
           TabOrder = 1
           ColorFocus = 16777088
           ExplicitTop = 20
@@ -186,6 +195,8 @@ inherited frmCadPedido: TfrmCadPedido
           Height = 27
           TabStop = False
           Align = alClient
+          DataField = 'DATAENTREGA'
+          DataSource = dmPedido.dsCadastro
           TabOrder = 0
           ColorFocus = 16777088
           ExplicitTop = 20
@@ -222,6 +233,7 @@ inherited frmCadPedido: TfrmCadPedido
           Top = 17
           Width = 41
           Height = 27
+          Hint = 'Pesquisar Forma Pagamento'
           Align = alLeft
           Caption = '....'
           ExplicitTop = 20
@@ -235,6 +247,8 @@ inherited frmCadPedido: TfrmCadPedido
           TabStop = False
           Align = alRight
           Color = clBtnFace
+          DataField = 'DESCRICAO_FORMAPAGTO'
+          DataSource = dmPedido.dsCadastro
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -247,6 +261,8 @@ inherited frmCadPedido: TfrmCadPedido
           Width = 95
           Height = 27
           Align = alClient
+          DataField = 'CODFORMAPAGTO'
+          DataSource = dmPedido.dsCadastro
           TabOrder = 1
           ColorFocus = 16777088
           ExplicitTop = 20
@@ -282,6 +298,7 @@ inherited frmCadPedido: TfrmCadPedido
           Top = 17
           Width = 41
           Height = 27
+          Hint = 'Pesquisar C. Pagamento'
           Align = alLeft
           Caption = '....'
           ExplicitTop = 20
@@ -295,6 +312,8 @@ inherited frmCadPedido: TfrmCadPedido
           TabStop = False
           Align = alRight
           Color = clBtnFace
+          DataField = 'DESCRICAO_CPGTO'
+          DataSource = dmPedido.dsCadastro
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -307,6 +326,8 @@ inherited frmCadPedido: TfrmCadPedido
           Width = 95
           Height = 27
           Align = alClient
+          DataField = 'CODCPAGTO'
+          DataSource = dmPedido.dsCadastro
           TabOrder = 1
           ColorFocus = 16777088
           ExplicitTop = 22
@@ -344,6 +365,8 @@ inherited frmCadPedido: TfrmCadPedido
           TabStop = False
           Align = alClient
           Color = clBtnFace
+          DataField = 'QTDTOTAL'
+          DataSource = dmPedido.dsCadastro
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -381,6 +404,8 @@ inherited frmCadPedido: TfrmCadPedido
           TabStop = False
           Align = alClient
           Color = clBtnFace
+          DataField = 'VALTOTAL'
+          DataSource = dmPedido.dsCadastro
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -454,8 +479,9 @@ inherited frmCadPedido: TfrmCadPedido
           Width = 705
           Height = 27
           Align = alClient
+          DataField = 'OBS'
+          DataSource = dmPedido.dsCadastro
           TabOrder = 0
-          OnDblClick = mm_ObservacoesDblClick
           ExplicitLeft = 176
           ExplicitTop = -45
           ExplicitWidth = 185
@@ -490,50 +516,109 @@ inherited frmCadPedido: TfrmCadPedido
         object dbgridProdutos: TDBGrid
           Left = 0
           Top = 0
-          Width = 660
+          Width = 696
           Height = 196
           TabStop = False
           Align = alClient
-          ReadOnly = True
+          DataSource = dmPedido.dsProduto
           TabOrder = 0
           TitleFont.Charset = ANSI_CHARSET
           TitleFont.Color = clWindowText
           TitleFont.Height = -13
           TitleFont.Name = 'Segoe UI'
           TitleFont.Style = []
+          Columns = <
+            item
+              Color = clBtnFace
+              Expanded = False
+              FieldName = 'NROITEM'
+              ReadOnly = True
+              Title.Alignment = taCenter
+              Title.Caption = 'N'#186' Item'
+              Visible = True
+            end
+            item
+              Color = clBtnFace
+              Expanded = False
+              FieldName = 'CODPRODUTO'
+              ReadOnly = True
+              Title.Alignment = taCenter
+              Title.Caption = 'Produto'
+              Visible = True
+            end
+            item
+              Color = clBtnFace
+              Expanded = False
+              FieldName = 'DESCRICAO_PRODUTO'
+              Title.Alignment = taCenter
+              Title.Caption = 'Dec. Produto'
+              Width = 150
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'QTDE'
+              Title.Alignment = taCenter
+              Title.Caption = 'Qtde.'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'PRECO'
+              Title.Alignment = taCenter
+              Title.Caption = 'Pre'#231'o'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'VALDESCONTO'
+              Title.Alignment = taCenter
+              Title.Caption = 'Vlr. Desconto'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'VALTOTAL'
+              Title.Alignment = taCenter
+              Title.Caption = 'Vlr. Total'
+              Visible = True
+            end>
         end
         object pnBotoesGrid: TPanel
-          Left = 660
+          Left = 696
           Top = 0
-          Width = 100
+          Width = 64
           Height = 196
           Align = alRight
           TabOrder = 1
           object btnExcluirProduto: TSpeedButton
             Left = 1
             Top = 65
-            Width = 98
+            Width = 62
             Height = 32
             Align = alTop
             Caption = 'Excluir'
             ExplicitTop = 1
+            ExplicitWidth = 98
           end
           object btnEditarProduto: TSpeedButton
             Left = 1
             Top = 33
-            Width = 98
+            Width = 62
             Height = 32
             Align = alTop
             Caption = 'Editar'
             ExplicitTop = 1
+            ExplicitWidth = 98
           end
           object btnIncluirProduto: TSpeedButton
             Left = 1
             Top = 1
-            Width = 98
+            Width = 62
             Height = 32
             Align = alTop
             Caption = 'Incluir'
+            ExplicitWidth = 98
           end
         end
       end

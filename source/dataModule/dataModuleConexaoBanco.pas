@@ -22,6 +22,7 @@ type
   public
     property codUsuarioLogado: integer read FcodUsuarioLogado write FcodUsuarioLogado;
     property usuarioLogado: string read FUsuarioLogado write FUsuarioLogado;
+    function GetDataServer: TDate;
     { Public declarations }
 
   end;
@@ -38,6 +39,21 @@ procedure TdmConexaoBanco.DataModuleCreate(Sender: TObject);
 begin
   conexaoBase.Connected := false;
   conexaoBase.Open;
+end;
+
+function TdmConexaoBanco.GetDataServer: TDate;
+begin
+  try
+    query.close;
+    query.SQL.Clear;
+    query.SQL.Add('SELECT current_date FROM RDB$DATABASE');
+    query.Open;
+
+    Result := query.Fields[0].AsDateTime;
+  finally
+    query.Close;
+    query.sql.Clear;
+  end;
 end;
 
 end.
