@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, formBase, Vcl.Buttons, Vcl.ExtCtrls,
-  Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit;
+  Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, Data.DB, Vcl.Grids, Vcl.DBGrids;
 
 type
   TTipoTela = (ttInserir, ttEditar);
@@ -44,10 +44,16 @@ type
     edt_VlrTotal: THDbEdit;
     rgSituacao: TRadioGroup;
     rgTipo: TRadioGroup;
-    pnProdutos: TPanel;
     pnObservacoes: TPanel;
     lbl_mm_Observacoes: TLabel;
     mm_Observacoes: TDBMemo;
+    gbProdutos: TGroupBox;
+    pnProdutos: TPanel;
+    dbgridProdutos: TDBGrid;
+    pnBotoesGrid: TPanel;
+    btnExcluirProduto: TSpeedButton;
+    btnEditarProduto: TSpeedButton;
+    btnIncluirProduto: TSpeedButton;
     procedure mm_ObservacoesDblClick(Sender: TObject);
   private
     FTipoTela: TTipoTela;

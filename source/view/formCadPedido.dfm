@@ -186,8 +186,6 @@ inherited frmCadPedido: TfrmCadPedido
           Height = 27
           TabStop = False
           Align = alClient
-          Color = clBtnFace
-          ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
           ExplicitTop = 20
@@ -465,18 +463,80 @@ inherited frmCadPedido: TfrmCadPedido
         end
       end
     end
-    object pnProdutos: TPanel
+    object gbProdutos: TGroupBox
       Left = 0
       Top = 305
       Width = 764
       Height = 217
       Align = alClient
-      BevelOuter = bvNone
+      Caption = 'Produtos'
       TabOrder = 1
-      ExplicitLeft = 344
-      ExplicitTop = 352
+      ExplicitLeft = 288
+      ExplicitTop = 16
       ExplicitWidth = 185
-      ExplicitHeight = 41
+      ExplicitHeight = 105
+      object pnProdutos: TPanel
+        Left = 2
+        Top = 19
+        Width = 760
+        Height = 196
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitLeft = 344
+        ExplicitTop = 352
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object dbgridProdutos: TDBGrid
+          Left = 0
+          Top = 0
+          Width = 660
+          Height = 196
+          TabStop = False
+          Align = alClient
+          ReadOnly = True
+          TabOrder = 0
+          TitleFont.Charset = ANSI_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -13
+          TitleFont.Name = 'Segoe UI'
+          TitleFont.Style = []
+        end
+        object pnBotoesGrid: TPanel
+          Left = 660
+          Top = 0
+          Width = 100
+          Height = 196
+          Align = alRight
+          TabOrder = 1
+          object btnExcluirProduto: TSpeedButton
+            Left = 1
+            Top = 65
+            Width = 98
+            Height = 32
+            Align = alTop
+            Caption = 'Excluir'
+            ExplicitTop = 1
+          end
+          object btnEditarProduto: TSpeedButton
+            Left = 1
+            Top = 33
+            Width = 98
+            Height = 32
+            Align = alTop
+            Caption = 'Editar'
+            ExplicitTop = 1
+          end
+          object btnIncluirProduto: TSpeedButton
+            Left = 1
+            Top = 1
+            Width = 98
+            Height = 32
+            Align = alTop
+            Caption = 'Incluir'
+          end
+        end
+      end
     end
   end
 end
