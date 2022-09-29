@@ -22,6 +22,8 @@ object frmBase: TfrmBase
     Height = 35
     Align = alTop
     BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
     TabOrder = 0
     object btnCancelar: TSpeedButton
       Left = 89
@@ -73,8 +75,8 @@ object frmBase: TfrmBase
     Height = 264
     Align = alClient
     BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
     TabOrder = 1
-    ExplicitTop = 8
-    ExplicitHeight = 41
   end
 end

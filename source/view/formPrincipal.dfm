@@ -14,6 +14,7 @@ object frmPrincipal: TfrmPrincipal
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
+  WindowState = wsMaximized
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 17
@@ -25,10 +26,6 @@ object frmPrincipal: TfrmPrincipal
     Align = alClient
     Caption = 'Henrique Pedidos'
     TabOrder = 0
-    ExplicitLeft = 240
-    ExplicitTop = 144
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object pnRodape: TPanel
       Left = 1
       Top = 296

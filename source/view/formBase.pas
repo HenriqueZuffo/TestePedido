@@ -8,6 +8,8 @@ uses
   uUtils;
 
 type
+  TTipoTela = (ttInserir, ttEditar);
+
   TfrmBase = class(TForm)
     pnTop: TPanel;
     pnGeral: TPanel;
@@ -23,9 +25,18 @@ type
     procedure btnSairClick(Sender: TObject);
   private
     FDm: TDmBase;
+    FTipoTela: TTipoTela;
+    FParametros: TArray<string>;
+    FValueParams: TArray<Variant>;
+    procedure SetTipoTela(const Value: TTipoTela);
+    procedure AjustaTelaInserir;
+    procedure AjustaTelaEditar;
     { Private declarations }
   public
     property Dm: TDmBase read FDm write FDm;
+    property Parametros: TArray<string> read FParametros write FParametros;
+    property ValueParams: TArray<Variant> read FValueParams write FValueParams;
+    property TipoTela: TTipoTela read FTipoTela write SetTipoTela;
     { Public declarations }
   end;
 
@@ -34,7 +45,37 @@ var
 
 implementation
 
+uses
+  Vcl.StdCtrls;
+
 {$R *.dfm}
+
+
+
+procedure TfrmBase.AjustaTelaEditar;
+var
+  i: integer;
+begin
+  for I := 0 to Self.Dm.queryCadastro.Params.Count-1 do begin
+    Self.Dm.queryCadastro.Params[i].Clear;
+  end;
+
+  for I := 0 to Length(Parametros)-1 do begin
+    Self.Dm.queryCadastro.ParamByName(Parametros[i]).Value := ValueParams[i];
+  end;
+
+  Self.Dm.queryCadastro.Open;
+end;
+
+procedure TfrmBase.AjustaTelaInserir;
+var
+  i: integer;
+begin
+  for I := 0 to Self.Dm.queryCadastro.Params.Count-1 do begin
+    Self.Dm.queryCadastro.Params[i].Clear;
+  end;
+  Self.Dm.queryCadastro.Open;
+end;
 
 procedure TfrmBase.btnCancelarClick(Sender: TObject);
 begin
@@ -90,6 +131,16 @@ end;
 procedure TfrmBase.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(self.Dm);
+end;
+
+procedure TfrmBase.SetTipoTela(const Value: TTipoTela);
+begin
+  FTipoTela := Value;
+
+  case Value of
+    ttInserir: AjustaTelaInserir;
+    ttEditar: AjustaTelaEditar;
+  end;
 end;
 
 end.

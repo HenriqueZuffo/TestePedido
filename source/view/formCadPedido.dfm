@@ -2,6 +2,11 @@ inherited frmCadPedido: TfrmCadPedido
   Caption = 'Pedido'
   ClientHeight = 557
   ClientWidth = 764
+  Color = clWhite
+  Constraints.MinHeight = 596
+  Constraints.MinWidth = 780
+  Position = poMainFormCenter
+  Visible = True
   ExplicitWidth = 780
   ExplicitHeight = 596
   PixelsPerInch = 96
@@ -22,6 +27,8 @@ inherited frmCadPedido: TfrmCadPedido
       Height = 305
       Align = alTop
       BevelOuter = bvNone
+      Color = clWhite
+      ParentBackground = False
       TabOrder = 0
       object pnPedido: TPanel
         Left = 27
@@ -55,6 +62,7 @@ inherited frmCadPedido: TfrmCadPedido
           Color = clBtnFace
           DataField = 'NROPEDIDO'
           DataSource = dmPedido.dsCadastro
+          Enabled = False
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -95,6 +103,7 @@ inherited frmCadPedido: TfrmCadPedido
           Color = clBtnFace
           DataField = 'DATA'
           DataSource = dmPedido.dsCadastro
+          Enabled = False
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -107,6 +116,7 @@ inherited frmCadPedido: TfrmCadPedido
         Width = 705
         Height = 44
         BevelOuter = bvNone
+        Caption = 'VALTOTAL'
         TabOrder = 2
         TabStop = True
         object lblCliente: TLabel
@@ -130,8 +140,11 @@ inherited frmCadPedido: TfrmCadPedido
           Width = 41
           Height = 27
           Hint = 'Pesquisar Cliente'
+          ParentCustomHint = False
           Align = alLeft
           Caption = '....'
+          ParentShowHint = False
+          ShowHint = True
           ExplicitTop = 20
           ExplicitHeight = 29
         end
@@ -145,6 +158,7 @@ inherited frmCadPedido: TfrmCadPedido
           Color = clBtnFace
           DataField = 'NOME_CLIENTE'
           DataSource = dmPedido.dsCadastro
+          Enabled = False
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -172,6 +186,7 @@ inherited frmCadPedido: TfrmCadPedido
         Width = 137
         Height = 44
         BevelOuter = bvNone
+        ParentBackground = False
         TabOrder = 3
         object lbl_edtDtEntrega: TLabel
           Left = 0
@@ -236,6 +251,8 @@ inherited frmCadPedido: TfrmCadPedido
           Hint = 'Pesquisar Forma Pagamento'
           Align = alLeft
           Caption = '....'
+          ParentShowHint = False
+          ShowHint = True
           ExplicitTop = 20
           ExplicitHeight = 29
         end
@@ -249,6 +266,7 @@ inherited frmCadPedido: TfrmCadPedido
           Color = clBtnFace
           DataField = 'DESCRICAO_FORMAPAGTO'
           DataSource = dmPedido.dsCadastro
+          Enabled = False
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -301,6 +319,8 @@ inherited frmCadPedido: TfrmCadPedido
           Hint = 'Pesquisar C. Pagamento'
           Align = alLeft
           Caption = '....'
+          ParentShowHint = False
+          ShowHint = True
           ExplicitTop = 20
           ExplicitHeight = 29
         end
@@ -314,6 +334,7 @@ inherited frmCadPedido: TfrmCadPedido
           Color = clBtnFace
           DataField = 'DESCRICAO_CPGTO'
           DataSource = dmPedido.dsCadastro
+          Enabled = False
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -367,6 +388,7 @@ inherited frmCadPedido: TfrmCadPedido
           Color = clBtnFace
           DataField = 'QTDTOTAL'
           DataSource = dmPedido.dsCadastro
+          Enabled = False
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -406,6 +428,7 @@ inherited frmCadPedido: TfrmCadPedido
           Color = clBtnFace
           DataField = 'VALTOTAL'
           DataSource = dmPedido.dsCadastro
+          Enabled = False
           ReadOnly = True
           TabOrder = 0
           ColorFocus = 16777088
@@ -608,6 +631,7 @@ inherited frmCadPedido: TfrmCadPedido
             Height = 32
             Align = alTop
             Caption = 'Editar'
+            OnClick = btnEditarProdutoClick
             ExplicitTop = 1
             ExplicitWidth = 98
           end
@@ -618,6 +642,7 @@ inherited frmCadPedido: TfrmCadPedido
             Height = 32
             Align = alTop
             Caption = 'Incluir'
+            OnClick = btnIncluirProdutoClick
             ExplicitWidth = 98
           end
         end

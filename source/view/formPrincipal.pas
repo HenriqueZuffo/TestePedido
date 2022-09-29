@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Buttons, Vcl.DBCtrls, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage;
+  Vcl.Buttons, Vcl.DBCtrls, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,
+  formBase;
 
 type
   TfrmPrincipal = class(TForm)
@@ -30,7 +31,7 @@ var
 implementation
 
 uses
-  dataModuleConexaoBanco;
+  dataModuleConexaoBanco, formCadPedido, dataModulePedido;
 
 {$R *.dfm}
 { TfrmPrincipal }
@@ -39,13 +40,20 @@ uses
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
-  lbl_usuarioLogado.Caption := Format('Usuário logado: %s - %s',
-    [dmConexaoBanco.codUsuarioLogado, dmConexaoBanco.usuarioLogado]);
+//  lbl_usuarioLogado.Caption := Format('Usuário logado: %s - %s',
+//    [dmConexaoBanco.codUsuarioLogado, dmConexaoBanco.usuarioLogado]);
 end;
 
 procedure TfrmPrincipal.Pedido1Click(Sender: TObject);
 begin
-  ShowMessage('Teste');
+  dmPedido := TdmPedido.Create(self);
+  frmCadPedido := TfrmCadPedido.create(Self);
+  frmCadPedido.dm := dmPedido;
+  frmCadPedido.TipoTela := ttInserir;
+
+  frmCadPedido.show;
+//  frmCadPedido := TFormCadPedido.Create(Self);
+
 end;
 
 end.

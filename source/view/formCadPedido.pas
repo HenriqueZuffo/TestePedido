@@ -5,11 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, formBase, Vcl.Buttons, Vcl.ExtCtrls,
-  Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, Data.DB, Vcl.Grids, Vcl.DBGrids;
+  Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  formCadProdutoPedido, dataModulePedido;
 
 type
-  TTipoTela = (ttInserir, ttEditar);
-
   TfrmCadPedido = class(TfrmBase)
     pnTopGeral: TPanel;
     pnPedido: TPanel;
@@ -54,12 +53,11 @@ type
     btnExcluirProduto: TSpeedButton;
     btnEditarProduto: TSpeedButton;
     btnIncluirProduto: TSpeedButton;
+    procedure btnIncluirProdutoClick(Sender: TObject);
+    procedure btnEditarProdutoClick(Sender: TObject);
   private
-    FTipoTela: TTipoTela;
-    procedure SetTipoTela(const Value: TTipoTela);
     { Private declarations }
   public
-    property TipoTela: TTipoTela read FTipoTela write SetTipoTela;
     { Public declarations }
   end;
 
@@ -72,9 +70,42 @@ implementation
 
 { TfrmCadPedido }
 
-procedure TfrmCadPedido.SetTipoTela(const Value: TTipoTela);
+
+procedure TfrmCadPedido.btnEditarProdutoClick(Sender: TObject);
+var
+  FormProduto: TFrmCadProdutoPedido;
 begin
-  FTipoTela := Value;
+  inherited;
+  try
+    TdmPedido(Self.dm).queryProduto.edit;
+
+    FormProduto := TFrmCadProdutoPedido.Create(Self);
+    FormProduto.Dm := Self.Dm;
+    FormProduto.formStyle := fsNormal;
+    FormProduto.visible := False;
+
+    FormProduto.ShowModal;
+  finally
+    FreeAndNil(formProduto);
+  end;
 end;
 
+procedure TfrmCadPedido.btnIncluirProdutoClick(Sender: TObject);
+var
+  FormProduto: TFrmCadProdutoPedido;
+begin
+  inherited;
+  try
+    TdmPedido(Self.dm).queryProduto.Append;
+
+    FormProduto := TFrmCadProdutoPedido.Create(Self);
+    FormProduto.Dm := Self.Dm;
+    FormProduto.formStyle := fsNormal;
+    FormProduto.visible := False;
+
+    FormProduto.ShowModal;
+  finally
+    FreeAndNil(formProduto);
+  end;
+end;
 end.
