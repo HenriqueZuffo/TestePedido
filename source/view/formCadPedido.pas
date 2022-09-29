@@ -12,21 +12,43 @@ type
 
   TfrmCadPedido = class(TfrmBase)
     pnTopGeral: TPanel;
-    pnCampos: TPanel;
+    pnPedido: TPanel;
     lbl_edt_NroPedido: TLabel;
     edt_NroPedido: THDbEdit;
-    Panel1: TPanel;
+    pnData: TPanel;
     lbl_edt_Data: TLabel;
     edt_Data: THDbEdit;
-    Panel2: TPanel;
+    pnCliente: TPanel;
     lblCliente: TLabel;
     edt_NomeCliente: THDbEdit;
     edt_CodCliente: THDbEdit;
     btnPesquisarCliente: TSpeedButton;
-    rgSituacao: TDBRadioGroup;
-    Panel3: TPanel;
+    pnDataEntrega: TPanel;
     lbl_edtDtEntrega: TLabel;
     edt_edtDtEntrega: THDbEdit;
+    pnFormaPagamento: TPanel;
+    lbl_formaPagamento: TLabel;
+    btnPesquisarFormaPagamento: TSpeedButton;
+    edt_nomeFormaPagamento: THDbEdit;
+    edt_codFormaPagamento: THDbEdit;
+    pnCPagamento: TPanel;
+    lbl_cPagamento: TLabel;
+    btnPesquisarCPagamento: TSpeedButton;
+    edt_NomeCPagamento: THDbEdit;
+    edt_codCPagamento: THDbEdit;
+    pnQtdTotal: TPanel;
+    lbl_edt_qtdTotal: TLabel;
+    edt_qtdTotal: THDbEdit;
+    pnVlrTotal: TPanel;
+    lbl_edt_VlrTotal: TLabel;
+    edt_VlrTotal: THDbEdit;
+    rgSituacao: TRadioGroup;
+    rgTipo: TRadioGroup;
+    pnProdutos: TPanel;
+    pnObservacoes: TPanel;
+    lbl_mm_Observacoes: TLabel;
+    mm_Observacoes: TDBMemo;
+    procedure mm_ObservacoesDblClick(Sender: TObject);
   private
     FTipoTela: TTipoTela;
     procedure SetTipoTela(const Value: TTipoTela);
@@ -44,6 +66,12 @@ implementation
 {$R *.dfm}
 
 { TfrmCadPedido }
+
+procedure TfrmCadPedido.mm_ObservacoesDblClick(Sender: TObject);
+begin
+  inherited;
+//
+end;
 
 procedure TfrmCadPedido.SetTipoTela(const Value: TTipoTela);
 begin
