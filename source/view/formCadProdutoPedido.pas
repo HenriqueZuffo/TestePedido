@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, formBase, Vcl.Buttons, Vcl.ExtCtrls,
-  Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, dataModulePedido, uUtils;
+  Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, dataModulePedido, uUtils,
+  formConsultaProduto;
 
 type
   TfrmCadProdutoPedido = class(TfrmBase)
@@ -41,6 +42,7 @@ type
     procedure btnCancelarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
+    procedure btnPesquisarClienteClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -91,6 +93,25 @@ begin
 
   TMessageBox.informar('Registro excluído com sucesso');
   self.close;
+end;
+
+procedure TfrmCadProdutoPedido.btnPesquisarClienteClick(Sender: TObject);
+var
+  FormConsultaProd: TFrmConsultaProduto;
+begin
+  inherited;
+  FormConsultaProd := TFrmConsultaProduto.Create(Self);
+  try
+    FormConsultaProd.formStyle := fsNormal;
+    FormConsultaProd.Visible := false;
+    FormConsultaProd.ShowModal;
+
+    if FormConsultaProd.ValueReturn <> '' then begin
+      TdmPedido(self.Dm).queryProdutoCODPRODUTO.AsString := FormConsultaProd.ValueReturn;
+    end;
+  finally
+    FreeAndNil(FormConsultaProd);
+  end;
 end;
 
 procedure TfrmCadProdutoPedido.FormClose(Sender: TObject;

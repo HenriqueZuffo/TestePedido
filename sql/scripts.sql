@@ -84,4 +84,4 @@ BEGIN
 	END ELSE  begin
 		NEW.nroitem = :seqItem +1;	
 	END
-END;	
+END;

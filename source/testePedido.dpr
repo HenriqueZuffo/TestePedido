@@ -12,7 +12,8 @@ uses
   uClasseBase in 'class\uClasseBase.pas',
   uPedido in 'class\uPedido.pas',
   dataModulePedido in 'dataModule\dataModulePedido.pas' {dmPedido: TDataModule},
-  formCadProdutoPedido in 'view\formCadProdutoPedido.pas' {frmCadProdutoPedido};
+  formCadProdutoPedido in 'view\formCadProdutoPedido.pas' {frmCadProdutoPedido},
+  formConsultaProduto in 'view\formConsultaProduto.pas' {frmConsultaProduto};
 
 {$R *.res}
 var

@@ -35,13 +35,24 @@ object frmConsultaBase: TfrmConsultaBase
       Font.Style = []
       ParentFont = False
     end
+    object btnPesquisar: TSpeedButton
+      Left = 535
+      Top = 33
+      Width = 26
+      Height = 25
+      Hint = 'Filtrar'
+      Caption = '...'
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = btnPesquisarClick
+    end
     object edt_desc: THedit
       Left = 24
       Top = 33
       Width = 505
       Height = 25
       TabOrder = 0
-      OnChange = edt_descChange
+      OnKeyPress = edt_descKeyPress
       ColorFocus = 16777088
     end
   end
@@ -59,6 +70,7 @@ object frmConsultaBase: TfrmConsultaBase
       Width = 635
       Height = 185
       Align = alClient
+      ReadOnly = True
       TabOrder = 0
       TitleFont.Charset = ANSI_CHARSET
       TitleFont.Color = clWindowText

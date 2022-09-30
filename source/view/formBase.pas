@@ -100,6 +100,7 @@ begin
   end;
   TMessageBox.informar('Registro salvo com sucesso');
   Self.Dm.queryCadastro.Close;
+  self.close;
 end;
 
 procedure TfrmBase.btnExcluirClick(Sender: TObject);
@@ -118,6 +119,7 @@ begin
   TMessageBox.informar('Registro excluído com sucesso');
 
   Self.Dm.queryCadastro.Close;
+  self.close;
 end;
 
 procedure TfrmBase.btnSairClick(Sender: TObject);

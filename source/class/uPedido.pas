@@ -382,7 +382,7 @@ begin
     dmConexaoBanco.query.ParamByName('VALTOTAL').AsFloat := self.valtotal;
 
     try
-      dmConexaoBanco.query.Open;
+      dmConexaoBanco.query.open;
       self.nroped_prods := dmConexaoBanco.query.Fields[0].AsInteger;
     finally
       dmConexaoBanco.query.SQL.Clear;
