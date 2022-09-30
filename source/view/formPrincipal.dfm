@@ -15,7 +15,6 @@ object frmPrincipal: TfrmPrincipal
   OldCreateOrder = False
   Position = poScreenCenter
   WindowState = wsMaximized
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 17
   object pnGeral: TPanel
@@ -34,16 +33,6 @@ object frmPrincipal: TfrmPrincipal
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 0
-      object lbl_usuarioLogado: TLabel
-        Left = 0
-        Top = 0
-        Width = 94
-        Height = 22
-        Align = alLeft
-        Caption = 'Usu'#225'rio Logado'
-        Layout = tlCenter
-        ExplicitHeight = 17
-      end
     end
   end
   object MainMenu1: TMainMenu

@@ -16,7 +16,9 @@ uses
   formConsultaProduto in 'view\formConsultaProduto.pas' {frmConsultaProduto},
   formConsultaClientes in 'view\formConsultaClientes.pas' {frmConsultaClientes},
   formConsultaCPagamento in 'view\formConsultaCPagamento.pas' {frmConsultaCPagamento},
-  formConsultaFormaPagamento in 'view\formConsultaFormaPagamento.pas' {frmConsultaFormaPagamento};
+  formConsultaFormaPagamento in 'view\formConsultaFormaPagamento.pas' {frmConsultaFormaPagamento},
+  formConsultaPedidos in 'view\formConsultaPedidos.pas' {frmConsultaPedidos},
+  formLogin in 'view\formLogin.pas' {frmLogin};
 
 {$R *.res}
 var
@@ -26,6 +28,12 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmConexaoBanco, dmConexaoBanco);
+
+  frmLogin := TfrmLogin.Create(Application);
+  frmLogin.ShowModal;
+
+  dmConexaoBanco.UsuarioLogado := frmLogin.usuarioLogado;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
+
   Application.Run;
 end.

@@ -17,12 +17,11 @@ type
     procedure DataModuleCreate(Sender: TObject);
   private
     FUsuarioLogado: string;
-    FcodUsuarioLogado: integer;
+    procedure SetUsuarioLogado(const Value: string);
     { Private declarations }
   public
-    property codUsuarioLogado: integer read FcodUsuarioLogado write FcodUsuarioLogado;
-    property usuarioLogado: string read FUsuarioLogado write FUsuarioLogado;
     function GetDataServer: TDate;
+    property UsuarioLogado: string read FUsuarioLogado write SetUsuarioLogado;
     { Public declarations }
   end;
 
@@ -54,4 +53,9 @@ begin
     query.sql.Clear;
   end;
 end;
+procedure TdmConexaoBanco.SetUsuarioLogado(const Value: string);
+begin
+  FUsuarioLogado := Value;
+end;
+
 end.

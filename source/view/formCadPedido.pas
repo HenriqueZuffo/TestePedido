@@ -60,6 +60,7 @@ type
     procedure btnPesquisarClienteClick(Sender: TObject);
     procedure btnPesquisarCPagamentoClick(Sender: TObject);
     procedure btnPesquisarFormaPagamentoClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     FNroPedido: integer;
     { Private declarations }
@@ -76,19 +77,42 @@ implementation
 
 {$R *.dfm}
 
+uses dataModuleConexaoBanco;
+
 { TfrmCadPedido }
 
 
 procedure TfrmCadPedido.AjustarTela;
 begin
   if Self.TipoTela = ttEditar then begin
-    TPedido.buscarPedido(nroPedido, TdmPedido(self.Dm).queryCadastro);
-    TPedidoProduto.BuscarProdutos(nroPedido, TdmPedido(self.Dm).queryProduto);
-  end else if Self.TipoTela = ttInserir then begin
+    TdmPedido(self.Dm).queryCadastro.close;
     TdmPedido(self.Dm).queryCadastro.Open;
     TdmPedido(self.Dm).queryCadastro.EmptyDataSet;
-    TdmPedido(self.Dm).queryCadastro.Append;
 
+    TdmPedido(self.Dm).queryProduto.close;
+    TdmPedido(self.Dm).queryProduto.Open;
+    TdmPedido(self.Dm).queryProduto.EmptyDataSet;
+
+    TPedido.buscarPedido(nroPedido, TdmPedido(self.Dm).queryCadastro);
+    TPedidoProduto.BuscarProdutos(nroPedido, TdmPedido(self.Dm).queryProduto);
+
+    if not (TdmPedido(Self.Dm).queryCadastro.State in [dsEdit, dsInsert]) then
+      TdmPedido(Self.Dm).queryCadastro.Edit;
+
+    rgSituacao.ItemIndex := TdmPedido(Self.Dm).queryCadastroSITUACAO.AsInteger - 1;
+    if TdmPedido(Self.Dm).queryCadastroTIPO.AsString = 'V' then begin
+      rgTipo.ItemIndex := 0;
+    end else if TdmPedido(Self.Dm).queryCadastroTIPO.AsString = 'B' then begin
+      rgTipo.ItemIndex := 1;
+    end else begin
+      rgTipo.ItemIndex := 2;
+    end;
+  end else if Self.TipoTela = ttInserir then begin
+    TdmPedido(self.Dm).queryCadastro.close;
+    TdmPedido(self.Dm).queryCadastro.Open;
+    TdmPedido(self.Dm).queryCadastro.EmptyDataSet;
+
+    TdmPedido(self.Dm).queryProduto.close;
     TdmPedido(self.Dm).queryProduto.Open;
     TdmPedido(self.Dm).queryProduto.EmptyDataSet;
   end;
@@ -210,6 +234,12 @@ begin
   finally
     FreeAndNil(formConsFormaPagamento);
   end;
+end;
+
+procedure TfrmCadPedido.FormShow(Sender: TObject);
+begin
+  inherited;
+  rgSituacao.Visible := Pos('ADM', UpperCase(dmConexaoBanco.UsuarioLogado)) > 0;
 end;
 
 end.

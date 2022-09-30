@@ -61,12 +61,10 @@ begin
   else
     Result := 0;
 end;
-
 function getValorByPercentual(AValorBase: Currency; APercentual: Double): Double;
 begin
   Result := (AValorBase * APercentual) / 100
 end;
-
 
 
 { TMessageBox }

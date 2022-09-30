@@ -123,12 +123,12 @@ begin
     dmConexaoBanco.query.Close;
     dmConexaoBanco.query.SQL.Clear;
 
-    dmConexaoBanco.query.SQL.Add('select nome from clientes where CODCLIENTE = :CODCLIENTE');
+    dmConexaoBanco.query.SQL.Add('select nome from clientes where CODCLIENTE = :CODCLIENTE ');
     dmConexaoBanco.query.ParamByName('CODCLIENTE').AsInteger := sender.AsInteger;
     dmConexaoBanco.query.Open;
 
     if dmConexaoBanco.query.IsEmpty then begin
-      TMessageBox.informar('Cliente não cadastrado');
+      TMessageBox.informar('Cliente não cadastrado ou não está ativo');
       Abort;
     end;
 
@@ -152,12 +152,12 @@ begin
     dmConexaoBanco.query.Close;
     dmConexaoBanco.query.SQL.Clear;
 
-    dmConexaoBanco.query.SQL.Add('select descricao from cpagto where CODCPAGTO = :CODCPAGTO');
+    dmConexaoBanco.query.SQL.Add('select descricao from cpagto where CODCPAGTO = :CODCPAGTO and SITUACAO = ''A'' ');
     dmConexaoBanco.query.ParamByName('CODCPAGTO').AsInteger := sender.AsInteger;
     dmConexaoBanco.query.Open;
 
     if dmConexaoBanco.query.IsEmpty then begin
-      TMessageBox.informar('C. Pagamento não cadastrado');
+      TMessageBox.informar('C. Pagamento não cadastrado ou não está ativo');
       Abort;
     end;
 
@@ -181,12 +181,12 @@ begin
     dmConexaoBanco.query.Close;
     dmConexaoBanco.query.SQL.Clear;
 
-    dmConexaoBanco.query.SQL.Add('select descricao from formapagto where CODFORMAPAGTO = :CODFORMAPAGTO');
+    dmConexaoBanco.query.SQL.Add('select descricao from formapagto where CODFORMAPAGTO = :CODFORMAPAGTO and SITUACAO = ''A'' ');
     dmConexaoBanco.query.ParamByName('CODFORMAPAGTO').AsInteger := sender.AsInteger;
     dmConexaoBanco.query.Open;
 
     if dmConexaoBanco.query.IsEmpty then begin
-      TMessageBox.informar('Forma Pagamento não cadastrado');
+      TMessageBox.informar('Forma Pagamento não cadastrado ou não está ativo');
       Abort;
     end;
 

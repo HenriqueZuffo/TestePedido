@@ -7,6 +7,7 @@ inherited frmCadPedido: TfrmCadPedido
   Constraints.MinWidth = 780
   Position = poMainFormCenter
   Visible = True
+  OnShow = FormShow
   ExplicitWidth = 780
   ExplicitHeight = 596
   PixelsPerInch = 96
@@ -18,6 +19,9 @@ inherited frmCadPedido: TfrmCadPedido
       ExplicitLeft = -6
       ExplicitTop = -6
       ExplicitHeight = 35
+    end
+    inherited btnExcluir: TSpeedButton
+      Visible = False
     end
   end
   inherited pnGeral: TPanel
@@ -454,6 +458,7 @@ inherited frmCadPedido: TfrmCadPedido
           'Finalizado')
         ParentFont = False
         TabOrder = 3
+        Visible = False
       end
       object rgTipo: TRadioGroup
         Left = 310
@@ -558,7 +563,6 @@ inherited frmCadPedido: TfrmCadPedido
               ReadOnly = True
               Title.Alignment = taCenter
               Title.Caption = 'Produto'
-              Width = 64
               Visible = True
             end
             item
@@ -575,7 +579,6 @@ inherited frmCadPedido: TfrmCadPedido
               FieldName = 'QTDE'
               Title.Alignment = taCenter
               Title.Caption = 'Qtde.'
-              Width = 64
               Visible = True
             end
             item
@@ -583,7 +586,6 @@ inherited frmCadPedido: TfrmCadPedido
               FieldName = 'PRECO'
               Title.Alignment = taCenter
               Title.Caption = 'Pre'#231'o'
-              Width = 64
               Visible = True
             end
             item
@@ -591,7 +593,6 @@ inherited frmCadPedido: TfrmCadPedido
               FieldName = 'VALDESCONTO'
               Title.Alignment = taCenter
               Title.Caption = 'Vlr. Desconto'
-              Width = 64
               Visible = True
             end
             item
@@ -599,7 +600,6 @@ inherited frmCadPedido: TfrmCadPedido
               FieldName = 'VALTOTAL'
               Title.Alignment = taCenter
               Title.Caption = 'Vlr. Total'
-              Width = 64
               Visible = True
             end>
         end

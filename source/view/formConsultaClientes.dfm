@@ -8,12 +8,14 @@ inherited frmConsultaClientes: TfrmConsultaClientes
         item
           Expanded = False
           FieldName = 'CODCLIENTE'
+          Title.Alignment = taCenter
           Title.Caption = 'Cliente'
           Visible = True
         end
         item
           Expanded = False
           FieldName = 'NOME'
+          Title.Alignment = taCenter
           Title.Caption = 'Nome'
           Width = 150
           Visible = True
@@ -21,8 +23,8 @@ inherited frmConsultaClientes: TfrmConsultaClientes
         item
           Expanded = False
           FieldName = 'FANTASIA'
+          Title.Alignment = taCenter
           Title.Caption = 'Fantasia'
-          Width = 64
           Visible = True
         end>
     end

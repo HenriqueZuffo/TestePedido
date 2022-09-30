@@ -94,7 +94,7 @@ uses
 { TPedido }
 
 class procedure TPedido.buscarPedido(const nroPedido: integer; query: TFDQuery);
-const _Query = 'SELECT P.NROPEDIDO, '+//
+const _Sql = ' SELECT P.NROPEDIDO, '+//
                '       P.DATA,'+//
                '       P.CODCLIENTE,'+//
                '       C.NOME AS NOME_CLIENTE,'+//
@@ -112,37 +112,58 @@ const _Query = 'SELECT P.NROPEDIDO, '+//
                '  JOIN CLIENTES C ON C.CODCLIENTE = P.CODCLIENTE'+//
                '  JOIN CPAGTO pgto ON pgto.CODCPAGTO = p.CODCPAGTO'+//
                '  LEFT JOIN FORMAPAGTO f ON f.CODFORMAPAGTO = p.CODFORMAPAGTO'+//
-               ' WHERE p.NROPEDIDO = :NROPEDIDO';
+               ' WHERE p.NROPEDIDO = :PEDIDO';
+var
+  listaPedido: TList<TPedido>;
+  pedido: TPedido;
+  i: integer;
 begin
   try
     dmConexaoBanco.query.Close;
     dmConexaoBanco.query.SQL.Clear;
-    dmConexaoBanco.query.SQL.Add(_Query);
-    dmConexaoBanco.query.ParamByName('NROPEDIDO').AsInteger := nroPedido;
+    dmConexaoBanco.query.SQL.Add(_Sql);
+    dmConexaoBanco.query.ParamByName('PEDIDO').AsInteger := nroPedido;
     dmConexaoBanco.query.Open;
 
+    listaPedido := TList<TPedido>.Create;
     dmConexaoBanco.query.First;
     while not dmConexaoBanco.query.Eof do begin
-      query.Append;
-      query.FieldByName('NROPEDIDO').AsInteger := dmConexaoBanco.query.FieldByName('NROPEDIDO').AsInteger;
-      query.FieldByName('DATA').AsDateTime := dmConexaoBanco.query.FieldByName('DATA').AsDateTime;
-      query.FieldByName('CODCLIENTE').AsInteger := dmConexaoBanco.query.FieldByName('CODCLIENTE').AsInteger;
-      query.FieldByName('NOME_CLIENTE').AsString := dmConexaoBanco.query.FieldByName('NOME_CLIENTE').AsString;
-      query.FieldByName('SITUACAO').AsInteger := dmConexaoBanco.query.FieldByName('SITUACAO').AsInteger;
-      query.FieldByName('DATAENTREGA').AsDateTime := dmConexaoBanco.query.FieldByName('DATAENTREGA').AsDateTime;
-      query.FieldByName('CODCPAGTO').AsInteger := dmConexaoBanco.query.FieldByName('CODCPAGTO').AsInteger;
-      query.FieldByName('descricao_cpgto').AsString := dmConexaoBanco.query.FieldByName('descricao_cpgto').AsString;
-      query.FieldByName('CODFORMAPAGTO').AsInteger := dmConexaoBanco.query.FieldByName('CODFORMAPAGTO').AsInteger;
-      query.FieldByName('descricao_formapagto').AsString := dmConexaoBanco.query.FieldByName('descricao_formapagto').AsString;
-      query.FieldByName('QTDTOTAL').AsFloat := dmConexaoBanco.query.FieldByName('QTDTOTAL').AsFloat;
-      query.FieldByName('VALTOTAL').AsFloat := dmConexaoBanco.query.FieldByName('VALTOTAL').AsFloat;
-      query.FieldByName('TIPO').AsString := dmConexaoBanco.query.FieldByName('TIPO').AsString;
-      query.FieldByName('OBS').AsString := dmConexaoBanco.query.FieldByName('OBS').AsString;
-      query.post;
+      pedido := TPedido.Create;
+      pedido.nropedido := dmConexaoBanco.query.FieldByName('NROPEDIDO').AsInteger;
+      pedido.data :=  dmConexaoBanco.query.FieldByName('DATA').AsDateTime;
+      pedido.codcliente := dmConexaoBanco.query.FieldByName('CODCLIENTE').AsInteger;
+      pedido.situacao := dmConexaoBanco.query.FieldByName('SITUACAO').AsInteger;
+      pedido.dataEntrega := dmConexaoBanco.query.FieldByName('DATAENTREGA').AsDateTime;
+      pedido.codcpagto := dmConexaoBanco.query.FieldByName('CODCPAGTO').AsInteger;
+      pedido.codformapagto := dmConexaoBanco.query.FieldByName('CODFORMAPAGTO').AsInteger;
+      pedido.qtdetotal := dmConexaoBanco.query.FieldByName('QTDTOTAL').AsFloat;
+      pedido.valtotal := dmConexaoBanco.query.FieldByName('VALTOTAL').AsFloat;
+      pedido.tipo := dmConexaoBanco.query.FieldByName('TIPO').AsString;
+      pedido.obs := dmConexaoBanco.query.FieldByName('OBS').AsString;
 
+      listaPedido.Add(pedido);
       dmConexaoBanco.query.Next;
     end;
+
+    query.EmptyDataSet;
+    for I := 0 to listaPedido.Count-1 do begin
+      query.Append;
+      query.FieldByName('NROPEDIDO').AsInteger := listaPedido[i].nropedido;
+      query.FieldByName('DATA').AsDateTime := listaPedido[i].data;
+      query.FieldByName('CODCLIENTE').AsInteger := listaPedido[i].codcliente;
+      query.FieldByName('SITUACAO').AsInteger := listaPedido[i].situacao;
+      query.FieldByName('DATAENTREGA').AsDateTime := listaPedido[i].dataEntrega;
+      query.FieldByName('CODCPAGTO').AsInteger := listaPedido[i].codcpagto;
+      query.FieldByName('CODFORMAPAGTO').AsInteger := listaPedido[i].codformapagto;
+      query.FieldByName('QTDTOTAL').AsFloat := listaPedido[i].qtdetotal;
+      query.FieldByName('VALTOTAL').AsFloat := listaPedido[i].valtotal;
+      query.FieldByName('TIPO').AsString := listaPedido[i].tipo;
+      query.FieldByName('OBS').AsString := listaPedido[i].obs;
+      query.post;
+    end;
+
   finally
+    FreeAndNil(pedido);
     dmConexaoBanco.query.Close;
     dmConexaoBanco.query.SQL.Clear;
   end;
@@ -288,6 +309,10 @@ const _Query = 'SELECT p.NROPED_PRODS, '+//
                '  FROM PED_PRODS p'+//
                '  JOIN PRODUTOS prod ON prod.CODPRODUTO = p.CODPRODUTO'+//
                ' WHERE p.NROPEDIDO  = :NROPEDIDO';
+var
+  listaProdutos: TList<TPedidoProduto>;
+  produto: TPedidoProduto;
+  i: integer;
 begin
   try
     dmConexaoBanco.query.Close;
@@ -296,25 +321,43 @@ begin
     dmConexaoBanco.query.ParamByName('NROPEDIDO').AsInteger := nroPedido;
     dmConexaoBanco.query.Open;
 
+    listaProdutos := TList<TPedidoProduto>.Create;
     dmConexaoBanco.query.First;
     while not dmConexaoBanco.query.Eof do begin
-      query.Append;
-      query.FieldByName('NROPED_PRODS').AsInteger := dmConexaoBanco.query.FieldByName('NROPED_PRODS').AsInteger;
-      query.FieldByName('NROPEDIDO').AsInteger := dmConexaoBanco.query.FieldByName('NROPEDIDO').AsInteger;
-      query.FieldByName('NROITEM').AsInteger := dmConexaoBanco.query.FieldByName('NROITEM').AsInteger;
-      query.FieldByName('CODPRODUTO').AsString := dmConexaoBanco.query.FieldByName('CODPRODUTO').AsString;
-      query.FieldByName('descricao_produto').AsString := dmConexaoBanco.query.FieldByName('descricao_produto').AsString;
-      query.FieldByName('QTDE').AsFloat := dmConexaoBanco.query.FieldByName('QTDE').AsFloat;
-      query.FieldByName('UN').AsString := dmConexaoBanco.query.FieldByName('UN').AsString;
-      query.FieldByName('PRECO').AsFloat := dmConexaoBanco.query.FieldByName('PRECO').AsFloat;
-      query.FieldByName('PERCDESCONTO').AsFloat := dmConexaoBanco.query.FieldByName('PERCDESCONTO').AsFloat;
-      query.FieldByName('VALDESCONTO').AsFloat := dmConexaoBanco.query.FieldByName('VALDESCONTO').AsFloat;
-      query.FieldByName('VALTOTAL').AsFloat := dmConexaoBanco.query.FieldByName('VALTOTAL').AsFloat;
-      query.post;
+      produto := TPedidoProduto.Create;
 
+      produto.nroped_prods := dmConexaoBanco.query.FieldByName('NROPED_PRODS').AsInteger;
+      produto.nropedido := dmConexaoBanco.query.FieldByName('NROPEDIDO').AsInteger;
+      produto.nroitem := dmConexaoBanco.query.FieldByName('NROITEM').AsInteger;
+      produto.codproduto := dmConexaoBanco.query.FieldByName('CODPRODUTO').AsString;
+      produto.qtde := dmConexaoBanco.query.FieldByName('QTDE').AsFloat;
+      produto.un := dmConexaoBanco.query.FieldByName('UN').AsString;
+      produto.preco := dmConexaoBanco.query.FieldByName('PRECO').AsFloat;
+      produto.percdesconto := dmConexaoBanco.query.FieldByName('PERCDESCONTO').AsFloat;
+      produto.valdesconto := dmConexaoBanco.query.FieldByName('VALDESCONTO').AsFloat;
+      produto.valtotal := dmConexaoBanco.query.FieldByName('VALTOTAL').AsFloat;
+
+      listaProdutos.Add(produto);
       dmConexaoBanco.query.Next;
     end;
+
+    query.EmptyDataSet;
+    for I := 0 to listaProdutos.Count-1 do begin
+      query.Append;
+      query.FieldByName('NROPED_PRODS').AsInteger := listaProdutos[i].nroped_prods;
+      query.FieldByName('NROPEDIDO').AsInteger := listaProdutos[i].nropedido;
+      query.FieldByName('NROITEM').AsInteger := listaProdutos[i].nroitem;
+      query.FieldByName('CODPRODUTO').AsString := listaProdutos[i].codproduto;
+      query.FieldByName('QTDE').AsFloat := listaProdutos[i].qtde;
+      query.FieldByName('UN').AsString := listaProdutos[i].un;
+      query.FieldByName('PRECO').AsFloat := listaProdutos[i].preco;
+      query.FieldByName('PERCDESCONTO').AsFloat := listaProdutos[i].percdesconto;
+      query.FieldByName('VALDESCONTO').AsFloat := listaProdutos[i].valdesconto;
+      query.FieldByName('VALTOTAL').AsFloat := listaProdutos[i].valtotal;
+      query.post;
+    end;
   finally
+    FreeAndNil(listaProdutos);
     dmConexaoBanco.query.Close;
     dmConexaoBanco.query.SQL.Clear;
   end;

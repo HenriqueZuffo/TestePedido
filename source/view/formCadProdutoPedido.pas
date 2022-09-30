@@ -10,7 +10,7 @@ uses
 
 type
   TfrmCadProdutoPedido = class(TfrmBase)
-    pnPedido: TPanel;
+    pnData: TPanel;
     lbl_edt_NroPedido: TLabel;
     edt_NroPedido: THDbEdit;
     pnNroItem: TPanel;

@@ -151,6 +151,14 @@
             <Form>frmConsultaFormaPagamento</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="view\formConsultaPedidos.pas">
+            <Form>frmConsultaPedidos</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="view\formLogin.pas">
+            <Form>frmLogin</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

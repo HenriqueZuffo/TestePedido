@@ -18,7 +18,7 @@ inherited frmCadProdutoPedido: TfrmCadProdutoPedido
     Height = 208
     ExplicitWidth = 764
     ExplicitHeight = 208
-    object pnPedido: TPanel
+    object pnData: TPanel
       Left = 27
       Top = 0
       Width = 137
@@ -271,10 +271,10 @@ inherited frmCadProdutoPedido: TfrmCadProdutoPedido
         Font.Color = clWindowText
         Font.Height = -13
         Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
+        Font.Style = []
         ParentFont = False
         Layout = tlCenter
-        ExplicitWidth = 73
+        ExplicitWidth = 70
       end
       object edt_PercDesconto: THDbEdit
         Left = 0
@@ -308,10 +308,10 @@ inherited frmCadProdutoPedido: TfrmCadProdutoPedido
         Font.Color = clWindowText
         Font.Height = -13
         Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
+        Font.Style = []
         ParentFont = False
         Layout = tlCenter
-        ExplicitWidth = 83
+        ExplicitWidth = 78
       end
       object edt_ValDesconto: THDbEdit
         Left = 0

@@ -38,6 +38,7 @@ requires
 
 contains
   HDbEdit in 'Source\HDbEdit.pas',
-  HEdit in 'source\HEdit.pas';
+  HEdit in 'source\HEdit.pas',
+  HMaskEdit in 'source\HMaskEdit.pas';
 
 end.

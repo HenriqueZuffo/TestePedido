@@ -94,6 +94,7 @@
         <DCCReference Include="bindengine.dcp"/>
         <DCCReference Include="Source\HDbEdit.pas"/>
         <DCCReference Include="source\HEdit.pas"/>
+        <DCCReference Include="source\HMaskEdit.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
