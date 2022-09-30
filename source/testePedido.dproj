@@ -139,6 +139,10 @@
             <Form>frmConsultaProduto</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="view\formConsultaClientes.pas">
+            <Form>frmConsultaClientes</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

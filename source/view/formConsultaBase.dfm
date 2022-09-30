@@ -25,9 +25,9 @@ object frmConsultaBase: TfrmConsultaBase
     object lbl_descricao: TLabel
       Left = 24
       Top = 16
-      Width = 55
+      Width = 29
       Height = 16
-      Caption = 'Descri'#231#227'o'
+      Caption = 'Filtro'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -70,6 +70,7 @@ object frmConsultaBase: TfrmConsultaBase
       Width = 635
       Height = 185
       Align = alClient
+      DataSource = DataSource1
       ReadOnly = True
       TabOrder = 0
       TitleFont.Charset = ANSI_CHARSET
@@ -112,6 +113,7 @@ object frmConsultaBase: TfrmConsultaBase
     Top = 16
   end
   object queryConsulta: TFDQuery
+    Connection = dmConexaoBanco.conexaoBase
     Left = 448
     Top = 16
   end

@@ -13,7 +13,8 @@ uses
   uPedido in 'class\uPedido.pas',
   dataModulePedido in 'dataModule\dataModulePedido.pas' {dmPedido: TDataModule},
   formCadProdutoPedido in 'view\formCadProdutoPedido.pas' {frmCadProdutoPedido},
-  formConsultaProduto in 'view\formConsultaProduto.pas' {frmConsultaProduto};
+  formConsultaProduto in 'view\formConsultaProduto.pas' {frmConsultaProduto},
+  formConsultaClientes in 'view\formConsultaClientes.pas' {frmConsultaClientes};
 
 {$R *.res}
 var
