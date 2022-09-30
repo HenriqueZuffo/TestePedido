@@ -28,11 +28,13 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmConexaoBanco, dmConexaoBanco);
-
-  frmLogin := TfrmLogin.Create(Application);
-  frmLogin.ShowModal;
-
-  dmConexaoBanco.UsuarioLogado := frmLogin.usuarioLogado;
+  try
+    frmLogin := TfrmLogin.Create(Application);
+    frmLogin.ShowModal;
+  finally
+    dmConexaoBanco.UsuarioLogado := frmLogin.usuarioLogado;
+    frmLogin.Free;
+  end;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
 
   Application.Run;
