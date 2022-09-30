@@ -24,7 +24,6 @@ type
     property usuarioLogado: string read FUsuarioLogado write FUsuarioLogado;
     function GetDataServer: TDate;
     { Public declarations }
-
   end;
 
 var
@@ -55,5 +54,4 @@ begin
     query.sql.Clear;
   end;
 end;
-
 end.

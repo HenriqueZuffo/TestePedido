@@ -9,7 +9,6 @@ object dmConexaoBanco: TdmConexaoBanco
       'User_Name=sysdba'
       'Password=masterkey'
       'DriverID=FB')
-    Connected = True
     Left = 232
     Top = 256
   end

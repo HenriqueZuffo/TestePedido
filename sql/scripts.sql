@@ -27,8 +27,6 @@ CREATE OR ALTER TRIGGER pedidos_bi FOR pedidos
 BEFORE INSERT POSITION 0
 AS 
 BEGIN 
-	NEW.DATA = CURRENT_DATE;
-	
 	NEW.nropedido = gen_id("PEDIDOS_COD", 1);
 END;
 
@@ -37,4 +35,53 @@ comment ON COLUMN pedidos.SITUACAO IS '1 -> Pendente
 
 comment ON COLUMN pedidos.TIPO  IS 'V -> Venda
 	B -> Bonificação
-    T -> Troca';	
+    T -> Troca';
+
+
+
+
+CREATE TABLE ped_prods(
+    NROPED_PRODS integer NOT NULL,
+	nropedido integer NOT NULL,
+	nroitem integer NOT NULL,
+	codproduto varchar(20) NOT null,
+	qtde double PRECISION NOT NULL,
+	un varchar(3) NOT NULL,
+	preco double PRECISION NOT NULL,
+	percdesconto double PRECISION,
+	valdesconto double PRECISION,
+	valtotal double PRECISION NOT NULL
+)
+
+
+
+ALTER TABLE ped_prods ADD CONSTRAINT pk_pedprods PRIMARY key(NROPED_PRODS, nroitem);
+
+ALTER TABLE ped_prods ADD CONSTRAINT fk_pedprods_produto FOREIGN key(codproduto) REFERENCES produtos(CODPRODUTO);
+
+
+
+CREATE generator pedprods_cod; 
+
+CREATE OR ALTER TRIGGER pedprods_bi FOR ped_prods 
+BEFORE INSERT POSITION 0
+AS 
+DECLARE VARIABLE seqItem integer;
+BEGIN 
+	
+	IF (COALESCE(NEW.NROPED_PRODS, 0) = 0) THEN BEGIN 
+		NEW.NROPED_PRODS = gen_id("PEDPRODS_COD", 1);			
+	END
+		
+	SELECT COALESCE(max(nroitem), 0)
+	  FROM ped_prods
+	  WHERE nroped_prods = NEW.nroped_prods AND 
+	        nropedido = NEW.nropedido
+	 INTO :seqItem;
+	
+	IF ((:seqItem <= 0) OR (:seqItem IS NULL)) THEN begin
+		NEW.nroitem = 1;
+	END ELSE  begin
+		NEW.nroitem = :seqItem +1;	
+	END
+END;	

@@ -75,6 +75,7 @@ begin
     Self.Dm.queryCadastro.Params[i].Clear;
   end;
   Self.Dm.queryCadastro.Open;
+  Self.Dm.queryCadastro.Append;
 end;
 
 procedure TfrmBase.btnCancelarClick(Sender: TObject);
@@ -97,7 +98,7 @@ begin
       abort;
     end;
   end;
-
+  TMessageBox.informar('Registro salvo com sucesso');
   Self.Dm.queryCadastro.Close;
 end;
 
@@ -113,6 +114,8 @@ begin
       abort;
     end;
   end;
+
+  TMessageBox.informar('Registro excluído com sucesso');
 
   Self.Dm.queryCadastro.Close;
 end;

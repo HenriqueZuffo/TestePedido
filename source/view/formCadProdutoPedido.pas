@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, formBase, Vcl.Buttons, Vcl.ExtCtrls,
-  Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, dataModulePedido;
+  Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, dataModulePedido, uUtils;
 
 type
   TfrmCadProdutoPedido = class(TfrmBase)
@@ -36,6 +36,11 @@ type
     lbl_edt_Total: TLabel;
     edt_Total: THDbEdit;
     edt_Un: THDbEdit;
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -48,5 +53,56 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmCadProdutoPedido.btnCancelarClick(Sender: TObject);
+begin
+  TdmPedido(self.Dm).queryProduto.cancel;
+  self.close;
+end;
+
+procedure TfrmCadProdutoPedido.btnConfirmarClick(Sender: TObject);
+begin
+  if TMessageBox.confirmar('Deseja salvar este registro?', moNao, miPergunta) = moNao then Exit;
+
+  try
+     TdmPedido(self.Dm).SalvarProduto;
+  except
+    on e: exception do begin
+      TMessageBox.informar('Ocorreu um erro ao tentar salvar o registro: ' + slineBreak + e.Message);
+      abort;
+    end;
+  end;
+  TMessageBox.informar('Registro salvo com sucesso');
+  self.close;
+end;
+
+procedure TfrmCadProdutoPedido.btnExcluirClick(Sender: TObject);
+begin
+  if TMessageBox.confirmar('Deseja excluir este registro?', moNao, miPergunta) = moNao then Exit;
+
+  try
+    TdmPedido(self.Dm).ExcluirProduto;
+  except
+    on e: exception do begin
+      TMessageBox.informar('Ocorreu um erro ao tentar excluir o registro: ' + slineBreak + e.Message);
+      abort;
+    end;
+  end;
+
+  TMessageBox.informar('Registro excluído com sucesso');
+  self.close;
+end;
+
+procedure TfrmCadProdutoPedido.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+//  inherited
+end;
+
+procedure TfrmCadProdutoPedido.FormDestroy(Sender: TObject);
+begin
+  //inherited;
+
+end;
 
 end.

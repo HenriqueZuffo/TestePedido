@@ -11,10 +11,13 @@ inherited frmCadProdutoPedido: TfrmCadProdutoPedido
   TextHeight = 17
   inherited pnTop: TPanel
     Width = 764
+    ExplicitWidth = 764
   end
   inherited pnGeral: TPanel
     Width = 764
     Height = 208
+    ExplicitWidth = 764
+    ExplicitHeight = 208
     object pnPedido: TPanel
       Left = 27
       Top = 0
@@ -92,7 +95,7 @@ inherited frmCadProdutoPedido: TfrmCadProdutoPedido
         ReadOnly = True
         TabOrder = 0
         ColorFocus = 16777088
-        ExplicitLeft = -1
+        ExplicitHeight = 25
       end
     end
     object pnProduto: TPanel
@@ -147,7 +150,7 @@ inherited frmCadProdutoPedido: TfrmCadProdutoPedido
         ReadOnly = True
         TabOrder = 0
         ColorFocus = 16777088
-        ExplicitLeft = 146
+        ExplicitHeight = 25
       end
       object edt_CodProduto: THDbEdit
         Left = 41
@@ -159,7 +162,7 @@ inherited frmCadProdutoPedido: TfrmCadProdutoPedido
         DataSource = dmPedido.dsProduto
         TabOrder = 1
         ColorFocus = 16777088
-        ExplicitWidth = 64
+        ExplicitHeight = 25
       end
       object edt_Un: THDbEdit
         Left = 640
@@ -171,6 +174,7 @@ inherited frmCadProdutoPedido: TfrmCadProdutoPedido
         DataSource = dmPedido.dsProduto
         TabOrder = 2
         ColorFocus = 16777088
+        ExplicitHeight = 25
       end
     end
     object pnQtde: TPanel
@@ -318,8 +322,7 @@ inherited frmCadProdutoPedido: TfrmCadProdutoPedido
         DataSource = dmPedido.dsProduto
         TabOrder = 0
         ColorFocus = 16777088
-        ExplicitLeft = 3
-        ExplicitTop = 23
+        ExplicitHeight = 25
       end
     end
     object pnTotal: TPanel

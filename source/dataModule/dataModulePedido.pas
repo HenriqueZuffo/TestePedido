@@ -7,7 +7,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dataModuleConexaoBanco,
-  uUtils, uPedido;
+  uUtils, uPedido, Data.FMTBcd, Data.SqlExpr, Datasnap.DBClient;
 
 type
   TdmPedido = class(TdmBase)
@@ -42,11 +42,9 @@ type
     procedure queryCadastroCODCLIENTEValidate(Sender: TField);
     procedure queryCadastroCODCPAGTOValidate(Sender: TField);
     procedure queryCadastroCODFORMAPAGTOValidate(Sender: TField);
-    procedure queryCadastroAfterOpen(DataSet: TDataSet);
     procedure queryCadastroNewRecord(DataSet: TDataSet);
     procedure queryCadastroAfterClose(DataSet: TDataSet);
     procedure queryProdutoCODPRODUTOValidate(Sender: TField);
-    procedure queryProdutoNewRecord(DataSet: TDataSet);
     procedure queryProdutoBeforePost(DataSet: TDataSet);
     procedure queryProdutoVALDESCONTOValidate(Sender: TField);
     procedure queryProdutoPRECOValidate(Sender: TField);
@@ -54,15 +52,16 @@ type
     procedure queryProdutoAfterPost(DataSet: TDataSet);
     procedure queryProdutoPERCDESCONTOValidate(Sender: TField);
   private
+    FNroPedido: integer;
     procedure CalculaTotalValProduto;
     procedure TotalizaProduto;
-
 
     { Private declarations }
   public
     procedure Salvar; override;
     procedure Excluir; override;
     procedure ExcluirProduto;
+    procedure SalvarProduto;
     { Public declarations }
   end;
 
@@ -99,8 +98,7 @@ end;
 procedure TdmPedido.ExcluirProduto;
 begin
   if queryProduto.RecordCount = 1 then begin
-    TMessageBox.informar('Não é possível excluir o produto pois o pedido irá ficar sem produto cadastrado!');
-    abort;
+    raise Exception.Create('Não é possível excluir o produto pois o pedido irá ficar sem produto cadastrado!');
   end;
 
   TPedidoProduto.excluir(queryProdutoNROITEM.AsInteger);
@@ -110,18 +108,6 @@ procedure TdmPedido.queryCadastroAfterClose(DataSet: TDataSet);
 begin
   inherited;
   queryProduto.close;
-end;
-
-procedure TdmPedido.queryCadastroAfterOpen(DataSet: TDataSet);
-begin
-  inherited;
-  queryProduto.close;
-  queryProduto.ParamByName('NROPEDIDO').Clear;
-  if queryCadastroNROPEDIDO.AsInteger > 0 then begin
-    queryProduto.ParamByName('NROPEDIDO').AsInteger := queryCadastroNROPEDIDO.AsInteger;
-  end;
-
-  queryProduto.Open;
 end;
 
 procedure TdmPedido.queryCadastroCODCLIENTEValidate(Sender: TField);
@@ -216,6 +202,9 @@ begin
   inherited;
   queryCadastroDATA.AsDateTime := dmConexaoBanco.GetDataServer;
   queryCadastroDATAENTREGA.AsDateTime := dmConexaoBanco.GetDataServer + 7;
+  queryCadastroNROPEDIDO.AsInteger := 0;
+  queryCadastroSITUACAO.AsInteger := 1;
+  queryCadastroTIPO.AsString := 'V';
 end;
 
 procedure TdmPedido.queryProdutoAfterPost(DataSet: TDataSet);
@@ -228,6 +217,18 @@ procedure TdmPedido.queryProdutoBeforePost(DataSet: TDataSet);
 begin
   inherited;
   CalculaTotalValProduto;
+
+  if queryProdutoNROPEDIDO.IsNull then begin
+    queryProdutoNROPEDIDO.AsInteger := queryCadastroNROPEDIDO.AsInteger;
+  end;
+
+  if queryProdutoNROPED_PRODS.IsNull then begin
+    queryProdutoNROPED_PRODS.AsInteger := 0;
+  end;
+
+  if queryProdutoNROITEM.IsNull then begin
+    queryProdutoNROITEM.AsInteger := 0;
+  end;
 end;
 
 procedure TdmPedido.queryProdutoCODPRODUTOValidate(Sender: TField);
@@ -243,8 +244,10 @@ begin
   try
     dmConexaoBanco.query.Close;
     dmConexaoBanco.query.SQL.Clear;
-    dmConexaoBanco.query.SQL.Add('select PRODUTO, UN, PRECO_VENDA from PRODUTOS where CODPRODUTO = :CODPRODUTO and SITUACAO = ''A'' ');
+    dmConexaoBanco.query.SQL.Add('select PRODUTO, UN, PRECOVENDA from PRODUTOS where TRIM(CODPRODUTO) = TRIM(:CODPRODUTO) and SITUACAO = ''A'' ');
     dmConexaoBanco.query.ParamByName('CODPRODUTO').AsString := Sender.AsString;
+    dmConexaoBanco.query.Open;
+
 
     if dmConexaoBanco.query.IsEmpty then begin
       TMessageBox.informar('Produto não cadastrado ou não está ativo!');
@@ -253,18 +256,11 @@ begin
 
     queryProdutoDESCRICAO_PRODUTO.AsString := dmConexaoBanco.query.FieldByName('PRODUTO').AsString;
     queryProdutoUN.AsString := dmConexaoBanco.query.FieldByName('UN').AsString;
-    queryProdutoPRECO.AsFloat := dmConexaoBanco.query.FieldByName('PRECO_VENDA').AsFloat;
+    queryProdutoPRECO.AsFloat := dmConexaoBanco.query.FieldByName('PRECOVENDA').AsFloat;
   finally
     dmConexaoBanco.query.Close;
     dmConexaoBanco.query.SQL.Clear;
   end;
-end;
-
-procedure TdmPedido.queryProdutoNewRecord(DataSet: TDataSet);
-begin
-  inherited;
-  queryProdutoNROITEM.AsInteger := 0;
-  queryProdutoNROPED_PRODS.AsInteger := 0;
 end;
 
 procedure TdmPedido.queryProdutoPERCDESCONTOValidate(Sender: TField);
@@ -304,9 +300,14 @@ var
   produtos: TPedidoProduto;
 begin
   inherited;
+  if (queryCadastro.State in [dsEdit, dsInsert]) then
+    queryCadastro.Post;
+
+  if (queryProduto.State in [dsEdit, dsInsert]) then
+    queryProduto.Post;
+
   if queryProduto.RecordCount <= 0 then begin
-    TMessageBox.informar('Para salvar o pedido é necessário informar os produtos!');
-    Abort;
+    raise Exception.Create('Para salvar o pedido é necessário informar os produtos!');
   end;
 
   pedido := nil;
@@ -362,6 +363,43 @@ begin
       FreeAndNil(pedido);
     end;
   end;
+end;
+
+procedure TdmPedido.SalvarProduto;
+var
+  produto: TPedidoProduto;
+begin
+  if queryCadastroNROPEDIDO.AsInteger > 0 then begin
+    produto := TPedidoProduto.Create;
+    try
+      produto.nroped_prods := queryProdutoNROPED_PRODS.AsInteger;
+      produto.nropedido := queryProdutoNROPEDIDO.AsInteger;
+      produto.nroitem := queryProdutoNROITEM.AsInteger;
+      produto.codproduto := queryProdutoCODPRODUTO.AsString;
+      produto.qtde := queryProdutoQTDE.AsFloat;
+      produto.un := queryProdutoUN.AsString;
+      produto.preco := queryProdutoPRECO.AsFloat;
+      produto.percdesconto := queryProdutoPERCDESCONTO.AsFloat;
+      produto.valdesconto := queryProdutoVALDESCONTO.AsFloat;
+      produto.valtotal := queryProdutoVALTOTAL.AsFloat;
+
+      try
+        dmConexaoBanco.conexaoBase.StartTransaction;
+        produto.Salvar;
+        dmConexaoBanco.conexaoBase.Commit;
+      except
+        on e: exception do begin
+          dmConexaoBanco.conexaoBase.Rollback;
+          raise Exception.Create('Ocorreu um erro ao tentar salvar o produto: ' + sLineBreak + e.Message);
+        end;
+      end;
+    finally
+      FreeAndNil(produto);
+    end;
+  end else begin
+    queryProduto.Post;
+  end;
+
 end;
 
 procedure TdmPedido.TotalizaProduto;

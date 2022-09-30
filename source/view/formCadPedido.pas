@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, formBase, Vcl.Buttons, Vcl.ExtCtrls,
   Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, Data.DB, Vcl.Grids, Vcl.DBGrids,
-  formCadProdutoPedido, dataModulePedido;
+  formCadProdutoPedido, dataModulePedido, uPedido;
 
 type
   TfrmCadPedido = class(TfrmBase)
@@ -55,9 +55,13 @@ type
     btnIncluirProduto: TSpeedButton;
     procedure btnIncluirProdutoClick(Sender: TObject);
     procedure btnEditarProdutoClick(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
   private
+    FNroPedido: integer;
     { Private declarations }
   public
+    property nroPedido: integer read FNroPedido write FNroPedido;
+    procedure AjustarTela;
     { Public declarations }
   end;
 
@@ -70,6 +74,35 @@ implementation
 
 { TfrmCadPedido }
 
+
+procedure TfrmCadPedido.AjustarTela;
+begin
+  if Self.TipoTela = ttEditar then begin
+    TPedido.buscarPedido(nroPedido, TdmPedido(self.Dm).queryCadastro);
+    TPedidoProduto.BuscarProdutos(nroPedido, TdmPedido(self.Dm).queryProduto);
+  end else if Self.TipoTela = ttInserir then begin
+    TdmPedido(self.Dm).queryCadastro.Open;
+    TdmPedido(self.Dm).queryCadastro.EmptyDataSet;
+    TdmPedido(self.Dm).queryCadastro.Append;
+
+    TdmPedido(self.Dm).queryProduto.Open;
+    TdmPedido(self.Dm).queryProduto.EmptyDataSet;
+  end;
+end;
+
+procedure TfrmCadPedido.btnConfirmarClick(Sender: TObject);
+begin
+  if not (TdmPedido(Self.Dm).queryCadastro.State in [dsEdit, dsInsert]) then
+    TdmPedido(Self.Dm).queryCadastro.Edit;
+
+  TdmPedido(Self.Dm).queryCadastroSITUACAO.AsInteger := rgSituacao.ItemIndex + 1;
+  case rgTipo.ItemIndex of
+    0: TdmPedido(Self.Dm).queryCadastroTIPO.AsString := 'V';
+    1: TdmPedido(Self.Dm).queryCadastroTIPO.AsString := 'B';
+    2: TdmPedido(Self.Dm).queryCadastroTIPO.AsString := 'T';
+  end;
+  inherited;
+end;
 
 procedure TfrmCadPedido.btnEditarProdutoClick(Sender: TObject);
 var
@@ -108,4 +141,5 @@ begin
     FreeAndNil(formProduto);
   end;
 end;
+
 end.

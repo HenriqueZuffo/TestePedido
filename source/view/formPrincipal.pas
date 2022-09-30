@@ -50,7 +50,7 @@ begin
   frmCadPedido := TfrmCadPedido.create(Self);
   frmCadPedido.dm := dmPedido;
   frmCadPedido.TipoTela := ttInserir;
-
+  frmCadPedido.AjustarTela;
   frmCadPedido.show;
 //  frmCadPedido := TFormCadPedido.Create(Self);
 

@@ -9,7 +9,10 @@ type
   THedit = class(TEdit)
   private
     FColorFocus: TColor;
+    FOriginalColor: TColor;
     procedure SetColorFocus(const Value: TColor);
+    procedure SetOriginalColor(const Value: TColor);
+        property OriginalColor: TColor read FOriginalColor write SetOriginalColor;
     { Private declarations }
   protected
     procedure DoEnter; override;
@@ -37,6 +40,7 @@ end;
 constructor THedit.Create(AOwner: TComponent);
 begin
   inherited;
+  OriginalColor := Color;
   ColorFocus := $00FFFF80;
 end;
 
@@ -49,12 +53,17 @@ end;
 procedure THedit.DoExit;
 begin
   inherited;
-  Color := clBtnFace;
+  Color := OriginalColor;
 end;
 
 procedure THedit.SetColorFocus(const Value: TColor);
 begin
   FColorFocus := Value;
+end;
+
+procedure THedit.SetOriginalColor(const Value: TColor);
+begin
+  FOriginalColor := Value;
 end;
 
 end.
