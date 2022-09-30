@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, formBase, Vcl.Buttons, Vcl.ExtCtrls,
   Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, Data.DB, Vcl.Grids, Vcl.DBGrids,
-  formCadProdutoPedido, dataModulePedido, uPedido, formConsultaClientes;
+  formCadProdutoPedido, dataModulePedido, uPedido, formConsultaClientes,
+  formConsultaCPagamento;
 
 type
   TfrmCadPedido = class(TfrmBase)
@@ -57,6 +58,7 @@ type
     procedure btnEditarProdutoClick(Sender: TObject);
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnPesquisarClienteClick(Sender: TObject);
+    procedure btnPesquisarCPagamentoClick(Sender: TObject);
   private
     FNroPedido: integer;
     { Private declarations }
@@ -162,6 +164,28 @@ begin
     end;
   finally
     FreeAndNil(formConsCliente);
+  end;
+end;
+
+procedure TfrmCadPedido.btnPesquisarCPagamentoClick(Sender: TObject);
+var
+  formConsCPagamento: TfrmConsultaCPagamento;
+begin
+  inherited;
+  formConsCPagamento := TfrmConsultaCPagamento.Create(Self);
+  try
+    formConsCPagamento.FormStyle := fsNormal;
+    formConsCPagamento.Visible := false;
+    formConsCPagamento.ShowModal;
+
+    if formConsCPagamento.ValueReturn > 0 then begin
+      if not (TdmPedido(Self.Dm).queryCadastro.State in [dsEdit, dsInsert]) then
+        TdmPedido(Self.Dm).queryCadastro.Edit;
+
+      TdmPedido(Self.dm).queryCadastroCODCPAGTO.AsInteger := formConsCPagamento.ValueReturn;
+    end;
+  finally
+    FreeAndNil(formConsCPagamento);
   end;
 end;
 

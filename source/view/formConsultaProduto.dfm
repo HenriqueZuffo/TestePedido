@@ -6,18 +6,13 @@ inherited frmConsultaProduto: TfrmConsultaProduto
   TextHeight = 17
   inherited pnTop: TPanel
     Width = 670
-    inherited btnPesquisar: TSpeedButton
-      Hint = 'Filtrar'
-      ParentShowHint = False
-      ShowHint = True
-    end
+    ExplicitWidth = 670
   end
   inherited pnGrid: TPanel
     Width = 670
+    ExplicitWidth = 670
     inherited dbGridConsulta: TDBGrid
       Width = 670
-      DataSource = DataSource1
-      ReadOnly = True
       Columns = <
         item
           Expanded = False
@@ -73,12 +68,13 @@ inherited frmConsultaProduto: TfrmConsultaProduto
   end
   inherited pnRodaPe: TPanel
     Width = 670
+    ExplicitWidth = 670
     inherited btnImportar: TButton
       Left = 595
+      ExplicitLeft = 595
     end
   end
   inherited queryConsulta: TFDQuery
-    Connection = dmConexaoBanco.conexaoBase
     UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
     UpdateOptions.EnableDelete = False
     UpdateOptions.EnableInsert = False

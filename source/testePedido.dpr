@@ -14,7 +14,8 @@ uses
   dataModulePedido in 'dataModule\dataModulePedido.pas' {dmPedido: TDataModule},
   formCadProdutoPedido in 'view\formCadProdutoPedido.pas' {frmCadProdutoPedido},
   formConsultaProduto in 'view\formConsultaProduto.pas' {frmConsultaProduto},
-  formConsultaClientes in 'view\formConsultaClientes.pas' {frmConsultaClientes};
+  formConsultaClientes in 'view\formConsultaClientes.pas' {frmConsultaClientes},
+  formConsultaCPagamento in 'view\formConsultaCPagamento.pas' {frmConsultaCPagamento};
 
 {$R *.res}
 var

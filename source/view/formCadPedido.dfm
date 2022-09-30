@@ -322,6 +322,7 @@ inherited frmCadPedido: TfrmCadPedido
           Caption = '....'
           ParentShowHint = False
           ShowHint = True
+          OnClick = btnPesquisarCPagamentoClick
           ExplicitTop = 20
           ExplicitHeight = 29
         end

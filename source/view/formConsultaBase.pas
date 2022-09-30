@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dataModuleConexaoBanco, Vcl.Grids,
-  Vcl.DBGrids, Vcl.ExtCtrls, HEdit, uUtils, Vcl.Buttons;
+  Vcl.DBGrids, Vcl.ExtCtrls, HEdit, uUtils, Vcl.Buttons,
+  System.Generics.Collections;
 
 type
   TfrmConsultaBase = class(TForm)
@@ -29,21 +30,22 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnPesquisarClick(Sender: TObject);
     procedure edt_descKeyPress(Sender: TObject; var Key: Char);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     FValueReturn: Variant;
     FFieldReturn: string;
     FFiltroConsulta: string;
     FCommandText: string;
     FWhereOriginal: string;
-    procedure retornaValor;
+    Parametros: TDictionary<String, Variant>;
 
+    procedure retornaValor;
     function montaFiltroConsulta: string;
     property filtroConsulta: string read FFiltroConsulta write FFiltroConsulta;
     property CommandText: string read FCommandText write FCommandText;
     property WhereOriginal: string read FWhereOriginal write FWhereOriginal;
-
     procedure OnTerminateThread(Sender: TObject);
-
     { Private declarations }
   public
     property FieldReturn: string read FFieldReturn write FFieldReturn;
@@ -85,6 +87,16 @@ begin
     montaFiltroConsulta;
 end;
 
+procedure TfrmConsultaBase.FormCreate(Sender: TObject);
+begin
+  Parametros := TDictionary<String, Variant>.Create;
+end;
+
+procedure TfrmConsultaBase.FormDestroy(Sender: TObject);
+begin
+  Parametros.Free;
+end;
+
 procedure TfrmConsultaBase.FormShow(Sender: TObject);
 var
   i: integer;
@@ -95,12 +107,16 @@ begin
   self.queryConsulta.Close;
   for I := 0 to Self.queryConsulta.SQL.Count-1 do begin
     if ((WhereOriginal <> '') or (Pos('WHERE', UpperCase(Self.queryConsulta.SQL[i])) > 0)) then begin
-      WhereOriginal := WhereOriginal + Self.queryConsulta.SQL[i];
+      WhereOriginal := WhereOriginal + sLineBreak + Self.queryConsulta.SQL[i];
     end else begin
-      CommandText := CommandText + Self.queryConsulta.SQL[i];
+      CommandText := CommandText + sLineBreak + Self.queryConsulta.SQL[i];
     end;
   end;
   self.queryConsulta.Open;
+
+  for I := 0 to Self.queryConsulta.Params.Count-1 do begin
+    Parametros.Add(Self.queryConsulta.Params[i].Name, Self.queryConsulta.Params[i].Value);
+  end;
 end;
 
 function TfrmConsultaBase.montaFiltroConsulta: string;
@@ -124,7 +140,11 @@ begin
     begin
       filtro := '';
       for I := 0 to self.queryConsulta.Fields.Count-1 do begin
-        filtro := filtro + iif(filtro = '', ' where ', ' or ') + ' upper(' +self.queryConsulta.Fields[i].FieldName + ') like upper(''%' + self.edt_desc.Text + '%'') ';
+        if ((WhereOriginal <> '') and (filtro = '')) then begin
+          filtro := ' ' + WhereOriginal + ' and upper('+self.queryConsulta.Fields[i].FieldName + ') like upper(''%' + self.edt_desc.Text + '%'') ';
+        end else begin
+          filtro := filtro + iif(filtro = '', ' where ', ' or ') + ' upper(' +self.queryConsulta.Fields[i].FieldName + ') like upper(''%' + self.edt_desc.Text + '%'') ';
+        end;
       end;
 
       TThread.Synchronize(Thread,
@@ -139,10 +159,20 @@ begin
 end;
 
 procedure TfrmConsultaBase.OnTerminateThread(Sender: TObject);
+var
+  i: Integer;
+  valorParametro: Variant;
 begin
   Self.queryConsulta.close;
   Self.queryConsulta.SQL.Clear;
   Self.queryConsulta.Sql.Add(self.CommandText + sLineBreak + self.filtroConsulta);
+
+  for i := 0 to self.queryConsulta.Params.Count-1 do begin
+    if Parametros.TryGetValue(self.queryConsulta.Params[i].Name, valorParametro) then begin
+      self.queryConsulta.Params[i].Value := valorParametro;
+    end;
+  end;
+
   Self.queryConsulta.Open;
 end;
 
