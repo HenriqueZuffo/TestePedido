@@ -147,6 +147,10 @@
             <Form>frmConsultaCPagamento</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="view\formConsultaFormaPagamento.pas">
+            <Form>frmConsultaFormaPagamento</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -15,7 +15,8 @@ uses
   formCadProdutoPedido in 'view\formCadProdutoPedido.pas' {frmCadProdutoPedido},
   formConsultaProduto in 'view\formConsultaProduto.pas' {frmConsultaProduto},
   formConsultaClientes in 'view\formConsultaClientes.pas' {frmConsultaClientes},
-  formConsultaCPagamento in 'view\formConsultaCPagamento.pas' {frmConsultaCPagamento};
+  formConsultaCPagamento in 'view\formConsultaCPagamento.pas' {frmConsultaCPagamento},
+  formConsultaFormaPagamento in 'view\formConsultaFormaPagamento.pas' {frmConsultaFormaPagamento};
 
 {$R *.res}
 var

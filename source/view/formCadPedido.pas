@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, formBase, Vcl.Buttons, Vcl.ExtCtrls,
   Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, HDbEdit, Data.DB, Vcl.Grids, Vcl.DBGrids,
   formCadProdutoPedido, dataModulePedido, uPedido, formConsultaClientes,
-  formConsultaCPagamento;
+  formConsultaCPagamento, formConsultaFormaPagamento;
 
 type
   TfrmCadPedido = class(TfrmBase)
@@ -59,6 +59,7 @@ type
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnPesquisarClienteClick(Sender: TObject);
     procedure btnPesquisarCPagamentoClick(Sender: TObject);
+    procedure btnPesquisarFormaPagamentoClick(Sender: TObject);
   private
     FNroPedido: integer;
     { Private declarations }
@@ -186,6 +187,28 @@ begin
     end;
   finally
     FreeAndNil(formConsCPagamento);
+  end;
+end;
+
+procedure TfrmCadPedido.btnPesquisarFormaPagamentoClick(Sender: TObject);
+var
+  formConsFormaPagamento: TfrmConsultaFormaPagamento;
+begin
+  inherited;
+  formConsFormaPagamento := TfrmConsultaFormaPagamento.Create(Self);
+  try
+    formConsFormaPagamento.FormStyle := fsNormal;
+    formConsFormaPagamento.Visible := false;
+    formConsFormaPagamento.ShowModal;
+
+    if formConsFormaPagamento.ValueReturn > 0 then begin
+      if not (TdmPedido(Self.Dm).queryCadastro.State in [dsEdit, dsInsert]) then
+        TdmPedido(Self.Dm).queryCadastro.Edit;
+
+      TdmPedido(Self.dm).queryCadastroCODFORMAPAGTO.AsInteger := formConsFormaPagamento.ValueReturn;
+    end;
+  finally
+    FreeAndNil(formConsFormaPagamento);
   end;
 end;
 
